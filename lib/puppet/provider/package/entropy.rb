@@ -29,9 +29,6 @@ Puppet::Type.type(:package).provide :entropy, :parent => Puppet::Provider::Packa
             package[field] = value unless !value or value.empty?
           end
           package[:provider] = :entropy
-
-          print package.to_yaml,"\n" if package[:name]=='htop' || package[:name]=='openssh'
-
           packages << new(package)
         end
       end
@@ -66,48 +63,37 @@ Puppet::Type.type(:package).provide :entropy, :parent => Puppet::Provider::Packa
   end
 
   def query
-    result_format = /@@\s*Package:\s*(\S+)\/(\S+)-[\.\d]+(?:_(?:alpha|beta|pre|rc|p)\d+)?(?:-r?\d+)?\s*branch:\s*\d+,\s*\[\S+\]\s*\n>>\s+Available:\s+version:\s+(\S+)\s+.*?\n>>\s+Installed:\s+version:\s+(Not installed|\S+)\s+/im
-    result_fields = [:category, :name, :version_available, :ensure]
-
-    match = package_name.match(/^(?:(.*)\/)?(.*)$/)
-    search = {}
-    search[:category] = match.captures[0]
-    search[:name]     = match.captures[1]
+    result_format = /^(\S+)\/(\S+)-([\.\d]+(?:_(?:alpha|beta|pre|rc|p)\d+)?(?:-r\d+)?)$/
+    result_fields = [:category, :name, :version_available]
 
     begin
-      search_output = equo "search", "--nocolor", package_name
+      search_output = equo "match", "--quiet", package_name
+      search_output.chomp
 
-      packages = []
-      search_output.scan(result_format) { |match|
-
-        match_fields = Hash[result_fields.zip(match)]
-
-        # skip packages that don't match exactly (equo search uses fuzzy matching)
-        if search[:name] == match_fields[:name] && ( ! search[:category] || search[:category].empty? || search[:category] == match_fields[:category])
-
-           package = {}
-           match_fields.each do |field, value|
-             package[field] = value unless !value or value.empty?
-           end
-           package[:ensure] = :absent if package[:ensure] == 'Not installed'
-           packages << package
+      search_match = search_output.match(result_format)
+      if search_match
+        package = {}
+        search_match.captures.each do |field, value|
+          package[field] = value unless !value or value.empty?
         end
-      }
 
-      case packages.size
-        when 0
-          not_found_value = "#{@resource[:category] ? @resource[:category] : "<unspecified category>"}/#{@resource[:name]}"
-          raise Puppet::Error.new("No package found with the specified name [#{not_found_value}]")
+        installed_output = equo 'match', '--quiet', '--installed', package_name
+        installed_output.chomp
+        installed_match = installed_output.match(result_format)
+        installed_match_fields = Hash[result_fields.zip(installed_match.captures)]
+
+        if installed_match
+          package[:ensure] = installed_match_fields[:version_available]
         else
-          packages.each do |candidate|
-            if (! search[:category] || search[:category].empty?) && search[:name] == candidate[:name]
-              return candidate
-            elsif search[:category] == candidate[:category] && search[:name] == candidate[:name]
-              return candidate
-            end
-            Puppet::Error.new("No exact matches for package '#{package_name}' in entropy db")
-          end
+          package[:ensure] = :absent
         end
+
+        return package
+
+      else
+        not_found_value = "#{@resource[:category] ? @resource[:category] : "<unspecified category>"}/#{@resource[:name]}"
+        raise Puppet::Error.new("No package found with the specified name [#{not_found_value}]")
+      end
     rescue Puppet::ExecutionFailure => detail
       raise Puppet::Error.new(detail)
     end
