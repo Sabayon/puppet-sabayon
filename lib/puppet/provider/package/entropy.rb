@@ -5,6 +5,9 @@ Puppet::Type.type(:package).provide :entropy, :parent => Puppet::Provider::Packa
   desc "Provides packaging support for Sabayon's entropy system."
 
   has_feature :versionable
+  has_feature :installable
+  has_feature :uninstallable
+  has_feature :upgradeable
 
   commands :equo => "/usr/bin/equo"
 
