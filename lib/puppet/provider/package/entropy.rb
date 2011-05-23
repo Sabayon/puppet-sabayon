@@ -11,9 +11,9 @@ Puppet::Type.type(:package).provide :entropy, :parent => Puppet::Provider::Packa
 
   commands :equo => "/usr/bin/equo"
 
-  #confine :operatingsystem => [ :gentoo, :sabayon ]
-
-  defaultfor :has_entropy => true
+  confine :operatingsystem => :sabayon
+  
+  defaultfor :operatingsystem => :sabayon
 
   def self.instances
     result_format = /^(\S+)\/(\S+)-([\.\d]+(?:_(?:alpha|beta|pre|rc|p)\d+)?(?:-r\d+)?)$/
