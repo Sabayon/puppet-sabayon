@@ -17,7 +17,7 @@ Puppet::Type.type(:package).provide :entropy, :parent => Puppet::Provider::Packa
 
   def self.instances
     result_format = /^(\S+)\/(\S+)-([\.\d]+(?:_(?:alpha|beta|pre|rc|p)\d+)?(?:-r\d+)?)(?:#(\S+))?$/
-    result_fields = [:category, :name, :version_available]
+        result_fields = [:category, :name, :ensure]
 
     begin
       search_output = equo "query", "installed", "--nocolor", "--quiet"
