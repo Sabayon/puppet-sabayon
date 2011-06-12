@@ -16,8 +16,8 @@ Puppet::Type.type(:package).provide :entropy, :parent => Puppet::Provider::Packa
   defaultfor :operatingsystem => :sabayon
 
   def self.instances
-    result_format = /^(\S+)\/(\S+)-([\.\d]+(?:_(?:alpha|beta|pre|rc|p)\d+)?(?:-r\d+)?)$/
-    result_fields = [:category, :name, :version_available]
+    result_format = /^(\S+)\/(\S+)-([\.\d]+(?:_(?:alpha|beta|pre|rc|p)\d+)?(?:-r\d+)?)(?:#(\S+))?$/
+        result_fields = [:category, :name, :ensure]
 
     begin
       search_output = equo "query", "installed", "--nocolor", "--quiet"
@@ -66,7 +66,7 @@ Puppet::Type.type(:package).provide :entropy, :parent => Puppet::Provider::Packa
   end
 
   def query
-    result_format = /^(\S+)\/(\S+)-([\.\d]+(?:_(?:alpha|beta|pre|rc|p)\d+)?(?:-r\d+)?)$/
+    result_format = /^(\S+)\/(\S+)-([\.\d]+(?:_(?:alpha|beta|pre|rc|p)\d+)?(?:-r\d+)?)(?:#(\S+))?$/
     result_fields = [:category, :name, :version_available]
 
     begin
@@ -76,16 +76,16 @@ Puppet::Type.type(:package).provide :entropy, :parent => Puppet::Provider::Packa
       search_match = search_output.match(result_format)
       if search_match
         package = {}
-        search_match.captures.each do |field, value|
+        result_fields.zip(search_match.captures).each do |field, value|
           package[field] = value unless !value or value.empty?
         end
 
         installed_output = equo 'match', '--quiet', '--installed', package_name
         installed_output.chomp
         installed_match = installed_output.match(result_format)
-        installed_match_fields = Hash[result_fields.zip(installed_match.captures)]
 
         if installed_match
+          installed_match_fields = Hash[result_fields.zip(installed_match.captures)]
           package[:ensure] = installed_match_fields[:version_available]
         else
           package[:ensure] = :absent
