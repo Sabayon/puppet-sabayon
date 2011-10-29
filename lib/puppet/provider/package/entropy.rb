@@ -20,7 +20,7 @@ Puppet::Type.type(:package).provide :entropy, :parent => Puppet::Provider::Packa
         result_fields = [:category, :name, :ensure]
 
     begin
-      search_output = equo "query", "installed", "--nocolor", "--quiet"
+      search_output = equo "query", "installed", "--nocolor", "--quiet", "--verbose"
 
       packages = []
       search_output.each do |search_result|
@@ -70,7 +70,7 @@ Puppet::Type.type(:package).provide :entropy, :parent => Puppet::Provider::Packa
     result_fields = [:category, :name, :version_available]
 
     begin
-      search_output = equo "match", "--quiet", package_name
+      search_output = equo "match", "--quiet", "--verbose", package_name
       search_output.chomp
 
       search_match = search_output.match(result_format)
