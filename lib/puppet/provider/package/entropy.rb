@@ -80,7 +80,7 @@ Puppet::Type.type(:package).provide :entropy, :parent => Puppet::Provider::Packa
           package[field] = value unless !value or value.empty?
         end
 
-        installed_output = equo 'match', '--quiet', '--installed', package_name
+        installed_output = equo 'match', '--quiet', '--verbose', '--installed', package_name
         installed_output.chomp
         installed_match = installed_output.match(result_format)
 
