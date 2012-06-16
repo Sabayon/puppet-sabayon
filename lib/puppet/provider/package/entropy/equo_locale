@@ -1,0 +1,6 @@
+#!/bin/bash
+
+source /etc/profile
+/usr/bin/equo $@
+
+exit 0

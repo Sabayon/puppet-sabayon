@@ -9,7 +9,7 @@ Puppet::Type.type(:package).provide :entropy, :parent => Puppet::Provider::Packa
   has_feature :uninstallable
   has_feature :upgradeable
 
-  commands :equo => "/usr/bin/equo"
+  commands :equo => "/var/lib/puppet/lib/puppet/provider/package/entropy/equo_locale"
 
   confine :operatingsystem => :sabayon
   
