@@ -20,10 +20,10 @@ Puppet::Type.type(:package).provide :entropy, :parent => Puppet::Provider::Packa
         result_fields = [:category, :name, :ensure]
 
     begin
-      search_output = equo "query", "installed", "--nocolor", "--quiet", "--verbose"
+      search_output = equo "query", "list", "installed", "--quiet", "--verbose"
 
       packages = []
-      search_output.each do |search_result|
+      search_output.each_line do |search_result|
         match = result_format.match(search_result)
 
         if match
