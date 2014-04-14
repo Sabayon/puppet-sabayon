@@ -4,7 +4,12 @@
 
 Facter.add("init") do
     setcode do
-        %x{/usr/bin/eselect sysvinit list | /bin/grep '\\[' | /bin/grep '\\*' | /usr/bin/awk '{print $2}'}.chomp
+        init = %x{/usr/bin/stat -c '%N' /sbin/init | /usr/bin/awk '{print $3}'}.chomp
+        if /systemd/.match(init)
+            'systemd'
+        else
+            'sysvinit'
+        end
     end
 end
 
