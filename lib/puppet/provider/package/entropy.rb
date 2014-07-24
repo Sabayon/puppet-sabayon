@@ -11,9 +11,9 @@ Puppet::Type.type(:package).provide :entropy, :parent => Puppet::Provider::Packa
 
   commands :equo => "/var/lib/puppet/lib/puppet/provider/package/entropy/equo_locale"
 
-  confine :operatingsystem => :sabayon
+  confine :has_entropy => true
   
-  defaultfor :operatingsystem => :sabayon
+  defaultfor :has_entropy => true
 
   def self.instances
     result_format = /^(\S+)\/(\S+)-([\.\d]+(?:_(?:alpha|beta|pre|rc|p)\d+)?(?:-r\d+)?)(?:#(\S+))?$/
