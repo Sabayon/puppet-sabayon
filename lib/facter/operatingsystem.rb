@@ -1,11 +1,13 @@
 Facter.add(:operatingsystem) do
-    confine :kernel => :linux
-    confine :has_entropy => true
+  # Sabayon Linux is a variant of Gentoo so this resolution needs to come
+  # before the Gentoo resolution.
+  has_weight(10)
+  confine :kernel => :linux
 
-    setcode do
-      if FileTest.exists?("/etc/sabayon-release")
-        "Sabayon"
-      end
-   end
+  setcode do
+    release_info = Facter::Util::Operatingsystem.os_release
+    if release_info['NAME'] == "Sabayon"
+      'Sabayon'
+    end
+  end
 end
-
