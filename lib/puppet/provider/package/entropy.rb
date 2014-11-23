@@ -16,7 +16,7 @@ Puppet::Type.type(:package).provide :entropy, :parent => Puppet::Provider::Packa
   defaultfor :has_entropy => true
 
   def self.instances
-    result_format = /^(\S+)\/(\S+)-([\.\d]+(?:_(?:alpha|beta|pre|rc|p)\d+)?(?:-r\d+)?)(?:#(\S+))?$/
+    result_format = /^(\S+)\/(\S+)-([\.\d]+(?:_?(?:a(?:lpha)?|b(?:eta)?|pre|rc|p)\d*)?(?:-r\d+)?)(?:#(\S+))?$/
         result_fields = [:category, :name, :ensure]
 
     begin
