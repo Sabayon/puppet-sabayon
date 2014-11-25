@@ -13,7 +13,7 @@ Puppet::Type.type(:package).provide :entropy, :parent => Puppet::Provider::Packa
 
   confine :has_entropy => true
   
-  defaultfor :has_entropy => true
+  defaultfor :has_entropy => :true, :osfamily => :Gentoo
 
   def self.instances
     result_format = /^(\S+)\/(\S+)-([\.\d]+(?:_?(?:a(?:lpha)?|b(?:eta)?|pre|rc|p)\d*)?(?:-r\d+)?)(?:#(\S+))?$/
