@@ -9,7 +9,7 @@ Puppet::Type.type(:package).provide :entropy, :parent => Puppet::Provider::Packa
   has_feature :uninstallable
   has_feature :upgradeable
 
-  commands :equo => "/var/lib/puppet/lib/puppet/provider/package/entropy/equo_locale"
+  commands :equo => "#{File.dirname(__FILE__)}/entropy/equo_locale"
 
   confine :has_entropy => true
   
