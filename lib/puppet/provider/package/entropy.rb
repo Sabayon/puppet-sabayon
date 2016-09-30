@@ -54,7 +54,11 @@ Puppet::Type.type(:package).provide :entropy, :parent => Puppet::Provider::Packa
 
   # The common package name format.
   def package_name
-    @resource[:category] ? "#{@resource[:category]}/#{@resource[:name]}" : @resource[:name]
+    if @resource[:category]
+      "#{@resource[:category]}/#{@resource[:name]}"
+    else
+      @resource[:name]
+    end
   end
 
   def uninstall
@@ -70,6 +74,7 @@ Puppet::Type.type(:package).provide :entropy, :parent => Puppet::Provider::Packa
     result_fields = [:category, :name, :version_available]
 
     begin
+      # Look for an installed package from a known repository
       search_output = equo "match", "--quiet", "--verbose", package_name
       search_output.chomp
 
@@ -94,8 +99,34 @@ Puppet::Type.type(:package).provide :entropy, :parent => Puppet::Provider::Packa
         return package
 
       else
-        not_found_value = "#{@resource[:category] ? @resource[:category] : "<unspecified category>"}/#{@resource[:name]}"
-        raise Puppet::Error.new("No package found with the specified name [#{not_found_value}]")
+        # List all installed packages and try and find if it's installed from outside a repository
+        # If so, assume the installed version is the latest available
+        all_installed = equo "query", "list", "installed", "--quiet", "--verbose"
+        all_installed.chomp
+
+        all_installed.split("\n").each do |installed_package|
+        
+          search_match = installed_package.match(result_format)
+          if search_match
+            search_captures = search_match.captures
+          
+            if (search_captures[0] == @resource[:category] and search_captures[1] == @resource[:name]) or "#{search_captures[0]}/#{search_captures[1]}" == package_name
+
+              package = {
+                :ensure => search_captures[2]
+              }
+
+              result_fields.zip(search_captures).each do |field, value|
+                package[field] = value unless !value or value.empty?
+              end
+
+              return package
+            
+            end
+          end
+        end
+
+        raise Puppet::Error.new("No package found with the specified name [#{package_name}]")
       end
     rescue Puppet::ExecutionFailure => detail
       raise Puppet::Error.new(detail)
