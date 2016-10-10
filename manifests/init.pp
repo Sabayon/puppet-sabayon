@@ -6,9 +6,9 @@ class sabayon {
 
     # Enman is used to manage SCR repositories
     package {
-        'enman':
+        'app-admin/enman':
             ensure   => installed,
-            catgeory => 'app-admin',
+            category => 'app-admin',
             name     => 'enman';
     }
 
