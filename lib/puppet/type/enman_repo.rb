@@ -1,5 +1,5 @@
 Puppet::Type.newtype(:enman_repo) do
-  @desc = "foo"
+  @desc = "Manages Sabayon Community Repositories"
   
   ensurable
   

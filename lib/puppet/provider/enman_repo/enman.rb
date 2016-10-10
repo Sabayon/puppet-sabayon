@@ -1,5 +1,3 @@
-require 'open3'
-
 Puppet::Type.type(:enman_repo).provide(:enman) do
   desc "Enman provider for Enman Repositories"
   
@@ -9,10 +7,6 @@ Puppet::Type.type(:enman_repo).provide(:enman) do
 
   mk_resource_methods
   
-  def initialize(value={})
-    super(value)
-  end
-
   def create
       enman("add", resource[:name])
       @property_hash[:ensure] = :present
