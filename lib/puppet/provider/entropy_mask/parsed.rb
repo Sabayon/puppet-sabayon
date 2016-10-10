@@ -11,8 +11,6 @@ Puppet::Type.type(:entropy_mask).provide(:parsed,
 
   defaultfor :operatingsystem => :sabayon
 
-  commands({:equo => "equo"})
-
   text_line :blank,
     :match => /^\s*$/
 
