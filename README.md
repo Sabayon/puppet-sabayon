@@ -25,13 +25,13 @@ It adds support for:
 
 ### What the sabayon module affects
 
-* `operatingsystem` fact
+* `operatingsystem` fact:
    This module overrides the operatingsystem fact to `Sabayon` on Sabayon
    systems.
-* `Service` provider
+* `Service` provider:
    This module overrides the default provider for `service` resources to
    force use of `systemd`
-* `Package` provider
+* `Package` provider:
    This module overrides the default provider for `package` resources to
    force use of `entropy`
 
