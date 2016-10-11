@@ -13,7 +13,7 @@
 
 ## Description
 
-This module extends puppet with support for the Sabayon Linux disttribution.
+This module extends puppet with support for the Sabayon Linux distribution.
 
 It adds support for:
 * The Entropy package manager
