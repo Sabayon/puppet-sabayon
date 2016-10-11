@@ -183,6 +183,24 @@ entropy_splitdebug { 'kernel':
 The same caveats about managint the splitdebug file apply as with the
 `entropy_mask` type above.
 
+### Enabling splitdebug masks for packages
+
+This type inverts the `entropy_splitdebug` behaviour, and prevents splitdebug
+from being installed for matching packages even when otherwise enabled by an
+`entropy_splitdebug` entry. Masks take precedence, and anything matched by an
+`entropy_splitdebug_mask` entry will never have debug information installed.
+All the same parameters are supported as with `entropy_mask`.
+
+```puppet
+entropy_splitdebug_mask { 'kernel-4.8':
+  package => 'sys-kernel/linux-sabayon',
+  slot    => '4.8',
+}
+```
+
+The same caveats about managint the splitdebug file apply as with the
+`entropy_mask` type above.
+
 ## Reference
 
 ### Classes
@@ -195,6 +213,7 @@ The same caveats about managint the splitdebug file apply as with the
 * `entropy_mask`: Manages entropy package masks
 * `entropy_unmask`: Manages entropy package unmasks
 * `entropy_splitdebug` Manages entropy package debug information
+* `entropy_splitdebug_mask` Manages entropy package debug information masks
 
 ## Limitations
 
