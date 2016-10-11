@@ -119,7 +119,7 @@ Alternatively, you could mask newer versions of a package
 
 ```puppet
 entropy_mask { 'mask-postgresql-9.5+':
-  package  => 'app-shells/bash',
+package  => 'app-shells/bash',
   operator => '>=',
   version  => '9.5',
 }
@@ -164,6 +164,25 @@ entropy_unmask { 'sublime':
 The same caveats about managing the unmask file apply as with `entropy_mask`
 above.
 
+### Enabling splitdebug for packages
+
+Entropy splits debug information for packages into separate objects which are
+installed at the same time as the package only if splitdebug is enabled
+globally, or for specific packages listed in the `package.splitdebug` file.
+
+This type behaves similarly to masks/unmasks and manages entries in the
+splitdebug file to define packages for which debug information should be
+installed. All the same parameters are supported as with `entropy_mask`.
+
+```puppet
+entropy_splitdebug { 'kernel':
+  package => 'sys-kernel/linux-sabayon',
+}
+```
+
+The same caveats about managint the splitdebug file apply as with the
+`entropy_mask` type above.
+
 ## Reference
 
 ### Classes
@@ -172,9 +191,10 @@ above.
 
 ### Types
 
-* `enman_repo` Manages SCR repositories using enman
-* `entropy_mask` Manages entropy package masks
-* `entropy_unmask` Manages entropy package unmasks
+* `enman_repo`: Manages SCR repositories using enman
+* `entropy_mask`: Manages entropy package masks
+* `entropy_unmask`: Manages entropy package unmasks
+* `entropy_splitdebug` Manages entropy package debug information
 
 ## Limitations
 
