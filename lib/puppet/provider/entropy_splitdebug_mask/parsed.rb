@@ -18,11 +18,11 @@ Puppet::Type.type(:entropy_splitdebug).provide(:parsed,
     :match      => /^\s*#/
 
   text_line :unmanaged,
-    :match   => %r{^([<>]?=)?([a-zA-Z+\/-]*)(?:-(\d+(?:\.\d+)*[a-z]*(?:_(?:alpha|beta|pre|p|rc)\d*)?(?:-r\d+)?))?(?::(\w+))?(?:\[([^\]]*)\])?(?:#(\w+))?(?:::(\w+))?\s*$}
+    :match   => %r{^([<>]?=)?([a-zA-Z+\/-]*)(?:-(\d+(?:\.\d+)*[a-z]*(?:_(?:alpha|beta|pre|p|rc)\d*)?(?:-r\d+)?))?(?::([a-zA-Z0-9\._-]+))?(?:\[([^\]]*)\])?(?:#([a-zA-Z0-9._-]+))?(?:::([a-zA-Z0-9._-]+))?\s*$}
 
   record_line :parsed,
     :fields => %w{operator package version slot use tag repo name},
-    :match   => %r{^([<>]?=)?([a-zA-Z+\/-]*)(?:-(\d+(?:\.\d+)*[a-z]*(?:_(?:alpha|beta|pre|p|rc)\d*)?(?:-r\d+)?))?(?::(\w+))?(?:\[([^\]]*)\])?(?:#(\w+))?(?:::(\w+))?\s+#+ Puppet Name: (.*)\s*$},
+    :match   => %r{^([<>]?=)?([a-zA-Z+\/-]*)(?:-(\d+(?:\.\d+)*[a-z]*(?:_(?:alpha|beta|pre|p|rc)\d*)?(?:-r\d+)?))?(?::([a-zA-Z0-9._-]+))?(?:\[([^\]]*)\])?(?:#([a-zA-Z0-9._-]+))?(?:::([a-zA-Z0-9._-]+))?\s+#+ Puppet Name: (.*)\s*$},
     :block_eval => :instance do
 
     def to_line(record)
