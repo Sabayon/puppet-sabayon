@@ -1,6 +1,9 @@
 ## Unreleased
 
-- Added support for `entropy_splitdebug` and `entropy_splitdebug_mask`
+- Added support for additional types:
+  - `entropy_splitdebug`
+  - `entropy_splitdebug_mask`
+  - `entropy_keywords`
 
 ## 2016-10-10 Release 0.0.2
 

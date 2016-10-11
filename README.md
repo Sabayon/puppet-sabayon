@@ -201,6 +201,34 @@ entropy_splitdebug_mask { 'kernel-4.8':
 The same caveats about managint the splitdebug file apply as with the
 `entropy_mask` type above.
 
+### Managing package keywords
+
+The `entropy_keywords` type allows managing entries in the `package.keywords`
+file, which can set missing keywords on packages. A typical example is when
+installing a `9999` version package straight from source control which hasn't
+been marked as supported on any platform.
+
+Parameters:
+* `keyword`: The package keyword to apply. Defaults to the OS architecutre,
+  e.g. `amd64` if not specified, but other typical values might be `~amd64`,
+  `-*` or `**`.
+* `package`: Name of the package, maybe qualified or unqualified.
+* `operator`: (`<`, `<=`, `=`, `>=`, `>`, applied to version)
+* `version`: Restrict the keyword to a specifc version or range of versions
+* `repo`: Restrict the keyword to packages from a specific repo
+
+At least one of `package` or `repo` must be specified.
+
+```puppet
+entropy_keywords { 'sublime-live':
+  package => 'app-text/sublime-text',
+  version => '9999',
+  keyword => '**',
+}
+```
+
+For more info on package keywords, see https://wiki.gentoo.org/wiki/KEYWORDS
+
 ## Reference
 
 ### Classes
