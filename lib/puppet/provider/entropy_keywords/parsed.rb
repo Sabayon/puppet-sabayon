@@ -23,9 +23,7 @@ Puppet::Type.type(:entropy_keywords).provide(:parsed,
   record_line :parsed,
     :fields => %w{keyword operator package version repo name},
     :match   => %r{^(\S+)\s+([<>]?=)?([a-zA-Z+\/-]*)(?:-(\d+(?:\.\d+)*[a-z]*(?:_(?:alpha|beta|pre|p|rc)\d*)?(?:-r\d+)?))?(?:\s+repo=([a-zA-Z0-9\._-]+))?\s+## Puppet Name: (.*)\s*$},
-    :block_eval => :instance do
-
-    def to_line(record)
+    :to_line => proc { |record|
       line = record[:keyword] + " "
       line += record[:operator]        if record[:operator]
       line += record[:package]         if record[:package]
@@ -34,10 +32,8 @@ Puppet::Type.type(:entropy_keywords).provide(:parsed,
       line += " ## Puppet Name: " + record[:name]
 
       line
-    end
+    }
 
-  end
-   
 end
 
 # vim: set ts=2 shiftwidth=2 expandtab :
