@@ -194,5 +194,29 @@ types.each do |type_name, type|
       end
 
     end
+
+    describe "when flushing" do
+      before :each do
+        @ramfile = Puppet::Util::FileType::FileTypeRam.new(@default_target)
+        File.stubs(:exist?).with(default_targets[type_name]).returns(true)
+        described_class.any_instance.stubs(:target_object).returns(@ramfile)
+
+        resource = type.new(:name => 'test', :package => 'app-admin/foobar')
+        resource.stubs(:should).with(:target).returns(@default_target)
+
+        @providerinstance = described_class.new(resource)
+        @providerinstance.ensure = :present
+        #@providerinstance.package = 'app-admin/foobar'
+      end
+
+      after :each do
+        described_class.clear
+      end
+
+      it "should write an atom name to disk" do
+        @providerinstance.flush
+        expect(@ramfile.read.chomp).to eq ('app-admin/foobar ## Puppet Name: test')
+      end
+    end
   end
 end
