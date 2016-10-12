@@ -1,7 +1,7 @@
 require 'puppet/provider/parsedfile'
 file = "/etc/entropy/packages/package.splitdebug.mask"
 
-Puppet::Type.type(:entropy_splitdebug).provide(:parsed,
+Puppet::Type.type(:entropy_splitdebug_mask).provide(:parsed,
   :parent => Puppet::Provider::ParsedFile,
   :default_target => file,
   :filetype => :flat
