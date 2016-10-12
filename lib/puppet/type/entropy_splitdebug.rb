@@ -52,6 +52,10 @@ Puppet::Type.newtype(:entropy_splitdebug) do
   end
 
   validate do
+    raise(ArgumentError, "At least one of package, tag or repo is required") if self[:package].nil? && self[:tag].nil? && self[:repo].nil?
+
+    raise(ArgumentError, "Package is required when a version is specified") if self[:package].nil? && !self[:version].nil?
+
     raise(ArgumentError, "Version is required when an operator is specified") if self[:version].nil? && !self[:operator].nil?
   end
 
