@@ -1,7 +1,7 @@
 require 'puppet/provider/package'
 require 'fileutils'
 
-Puppet::Type.type(:package).provide :entropy, :parent => Puppet::Provider::Package do
+Puppet::Type.type(:package).provide(:entropy, :parent => Puppet::Provider::Package) do
   desc "Provides packaging support for Sabayon's entropy system."
 
   has_feature :versionable
@@ -9,18 +9,28 @@ Puppet::Type.type(:package).provide :entropy, :parent => Puppet::Provider::Packa
   has_feature :uninstallable
   has_feature :upgradeable
 
-  commands :equo => "#{File.dirname(__FILE__)}/entropy/equo_locale"
+  commands({
+      :equo => 'equo',
+  })
 
-  confine :has_entropy => true
+  # Require the locale fact exist
+  confine :false => Facter.value(:locale).nil?
+  confine :osfamily => :Gentoo
   
-  defaultfor :has_entropy => :true, :osfamily => :Gentoo
+  defaultfor :operatingsystem => :Sabayon
+
+  def self.equo_with_locale(*args)
+    Puppet::Util.withenv :LANG => Facter.value(:locale) do
+      equo(args)
+    end
+  end
 
   def self.instances
     result_format = /^(\S+)\/(\S+)-([\.\d]+(?:_?(?:a(?:lpha)?|b(?:eta)?|pre|rc|p)\d*)?(?:-r\d+)?)(?:#(\S+))?$/
         result_fields = [:category, :name, :ensure]
 
     begin
-      search_output = equo "query", "list", "installed", "--quiet", "--verbose"
+      search_output = equo_with_locale("query", "list", "installed", "--quiet", "--verbose").chomp
 
       packages = []
       search_output.each_line do |search_result|
@@ -32,6 +42,7 @@ Puppet::Type.type(:package).provide :entropy, :parent => Puppet::Provider::Packa
             package[field] = value unless !value or value.empty?
           end
           package[:provider] = :entropy
+
           packages << new(package)
         end
       end
@@ -49,7 +60,7 @@ Puppet::Type.type(:package).provide :entropy, :parent => Puppet::Provider::Packa
       # We must install a specific version
       name = "=#{name}-#{should}"
     end
-    equo "install", name
+    equo_with_locale "install", name
   end
 
   # The common package name format.
@@ -62,7 +73,7 @@ Puppet::Type.type(:package).provide :entropy, :parent => Puppet::Provider::Packa
   end
 
   def uninstall
-    equo "remove", package_name
+    equo_with_locale "remove", package_name
   end
 
   def update
@@ -75,8 +86,7 @@ Puppet::Type.type(:package).provide :entropy, :parent => Puppet::Provider::Packa
 
     begin
       # Look for an installed package from a known repository
-      search_output = equo "match", "--quiet", "--verbose", package_name
-      search_output.chomp
+      search_output = equo_with_locale("match", "--quiet", "--verbose", package_name).chomp
 
       search_match = search_output.match(result_format)
       if search_match
@@ -85,8 +95,7 @@ Puppet::Type.type(:package).provide :entropy, :parent => Puppet::Provider::Packa
           package[field] = value unless !value or value.empty?
         end
 
-        installed_output = equo 'match', '--quiet', '--verbose', '--installed', package_name
-        installed_output.chomp
+        installed_output = equo_with_locale('match', '--quiet', '--verbose', '--installed', package_name).chomp
         installed_match = installed_output.match(result_format)
 
         if installed_match
@@ -101,8 +110,7 @@ Puppet::Type.type(:package).provide :entropy, :parent => Puppet::Provider::Packa
       else
         # List all installed packages and try and find if it's installed from outside a repository
         # If so, assume the installed version is the latest available
-        all_installed = equo "query", "list", "installed", "--quiet", "--verbose"
-        all_installed.chomp
+        all_installed = equo_with_locale("query", "list", "installed", "--quiet", "--verbose").chomp
 
         all_installed.split("\n").each do |installed_package|
         
