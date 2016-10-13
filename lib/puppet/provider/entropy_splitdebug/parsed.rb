@@ -18,11 +18,11 @@ Puppet::Type.type(:entropy_splitdebug).provide(:parsed,
     :match      => /^\s*#/
 
   text_line :unmanaged,
-    :match   => %r{^([<>]?=)?([a-zA-Z+\/-]*)(?:-(\d+(?:\.\d+)*[a-z]*(?:_(?:alpha|beta|pre|p|rc)\d*)?(?:-r\d+)?))?(?::([a-zA-Z0-9\._-]+))?(?:\[([^\]]*)\])?(?:#([a-zA-Z0-9\._-]+))?(?:::([a-zA-Z0-9\._-]+))?\s*$}
+    :match   => %r{^([<>]?=)?((?:[A-Za-z0-9+_.-]+/)?[a-zA-Z0-9+_-]+)?(?:-(\d+(?:\.\d+)*[a-z]*(?:_(?:alpha|beta|pre|p|rc)\d*)?(?:-r\d+)?))?(?::([a-zA-Z0-9\._-]+))?(?:\[([^\]]*)\])?(?:#([a-zA-Z0-9\._-]+))?(?:::([a-zA-Z0-9\._-]+))?\s*$}
 
   record_line :parsed,
     :fields => %w{operator package version slot use tag repo name},
-    :match   => %r{^([<>]?=)?([a-zA-Z+\/-]*)(?:-(\d+(?:\.\d+)*[a-z]*(?:_(?:alpha|beta|pre|p|rc)\d*)?(?:-r\d+)?))?(?::([a-zA-Z0-9\._-]+))?(?:\[([^\]]*)\])?(?:#([a-zA-Z0-9\._-]+))?(?:::([a-zA-Z0-9\._-]+))?\s+#+ Puppet Name: (.*)\s*$},
+    :match   => %r{^([<>]?=)?((?:[A-Za-z0-9+_.-]+/)?[a-zA-Z0-9+_-]+)?(?:-(\d+(?:\.\d+)*[a-z]*(?:_(?:alpha|beta|pre|p|rc)\d*)?(?:-r\d+)?))?(?::([a-zA-Z0-9\._-]+))?(?:\[([^\]]*)\])?(?:#([a-zA-Z0-9\._-]+))?(?:::([a-zA-Z0-9\._-]+))?\s+#+ Puppet Name: (.*)\s*$},
     :to_line => proc { |record|
       line = ""
       line += record[:operator]        if record[:operator]

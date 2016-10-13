@@ -54,10 +54,34 @@ types.each do |type_name, type|
     end
 
     describe "when validating required properties" do
-      it "should raise an error when no required attributes are passed" do
-        expect {
-          described_class.new(:name => "test")
-        }.to raise_error(Puppet::Error, /At least one of (.*) is required/)
+      packages = [
+        'virtual/package',
+        'package',
+        'package-with-dash',
+        'package_with_underscores',
+        'category-123/package2',
+        'category.with.dots/package'
+      ]
+      packages.each do |package|
+        it "should accept valid package name #{package}" do
+          expect {
+            described_class.new(:name => 'test', :package => package)
+          }.not_to raise_error
+        end
+      end
+
+      packages = [
+        'two/category/package',
+        'invalid-package-1.2',
+        '/no-category-package',
+        'no-package-category/',
+      ]
+      packages.each do |package|
+        it "should reject invalid package name #{package}" do
+          expect {
+            described_class.new(:name => 'test', :package => package)
+          }.to raise_error(Puppet::Error)
+        end
       end
 
       it "should raise an error when a version is passed with no package" do

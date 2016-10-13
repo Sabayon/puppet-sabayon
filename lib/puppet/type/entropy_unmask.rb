@@ -13,14 +13,12 @@ Puppet::Type.newtype(:entropy_unmask) do
 
   newproperty(:package) do
     desc "Name of the package being masked"
+    newvalues(%r{^(?:[A-Za-z0-9+_.-]+\/)?[a-zA-Z0-9+_-]+$})
   end
 
   newproperty(:version) do
     desc "Version of the package"
-
-    validate do |value|
-      raise(ArgumentError, "") if value !~ /^(\d*(?:\.\d+[a-zA-Z]*)*)(?:_((?:alpha|beta|pre|rc)\d*))?(-r\d+)?$/
-    end
+    newvalues(%r{^(\d*(?:\.\d+[a-zA-Z]*)*)(?:_((?:alpha|beta|pre|rc)\d*))?(-r\d+)?$})
   end
 
   newproperty(:slot) do

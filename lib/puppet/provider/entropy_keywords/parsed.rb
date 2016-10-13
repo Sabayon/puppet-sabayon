@@ -18,11 +18,11 @@ Puppet::Type.type(:entropy_keywords).provide(:parsed,
     :match      => /^\s*#/
 
   text_line :unmanaged,
-    :match   => %r{^(\S+)\s+([<>]?=)?(?:([a-zA-Z+\/-]+)(?:-(\d+(?:\.\d+)*[a-z]*(?:_(?:alpha|beta|pre|p|rc)\d*)?(?:-r\d+)?))?)?(?:\s*repo=([a-zA-Z0-9\._-]+))?\s*$}
+    :match   => %r{^(\S+)\s+([<>]?=)?(?:((?:[A-Za-z0-9+_.-]+/)?[a-zA-Z0-9+_-]+)?(?:-(\d+(?:\.\d+)*[a-z]*(?:_(?:alpha|beta|pre|p|rc)\d*)?(?:-r\d+)?))?)?(?:\s*repo=([a-zA-Z0-9\._-]+))?\s*$}
 
   record_line :parsed,
     :fields => %w{keyword operator package version repo name},
-    :match   => %r{^(\S+)\s+([<>]?=)?(?:([a-zA-Z+\/-]+)(?:-(\d+(?:\.\d+)*[a-z]*(?:_(?:alpha|beta|pre|p|rc)\d*)?(?:-r\d+)?))?)?(?:\s*repo=([a-zA-Z0-9\._-]+))?\s+## Puppet Name: (.*)\s*$},
+    :match   => %r{^(\S+)\s+([<>]?=)?(?:((?:[A-Za-z0-9+_.-]+/)?[a-zA-Z0-9+_-]+)?(?:-(\d+(?:\.\d+)*[a-z]*(?:_(?:alpha|beta|pre|p|rc)\d*)?(?:-r\d+)?))?)?(?:\s*repo=([a-zA-Z0-9\._-]+))?\s+## Puppet Name: (.*)\s*$},
     :to_line => proc { |record|
       line = record[:keyword] + " "
       line += record[:operator]        if record[:operator]
