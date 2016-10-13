@@ -1,3 +1,10 @@
+## UNRELEASED
+
+- Add `locale` fact
+- Remove obsolete `has_entropy` fact
+- Improve `entropy` package provider to set locale envvar directly
+  and not shell out to a distributed script to set locale.
+
 ## 2016-10-13 Release 0.1.2
 
 - Improved package regexes for valdiation and parsing
