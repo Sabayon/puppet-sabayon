@@ -1,4 +1,4 @@
-## UNRELEASED
+## 2016-10-13 Release 0.2.0
 
 - Add `locale` fact
 - Remove obsolete `has_entropy` fact
