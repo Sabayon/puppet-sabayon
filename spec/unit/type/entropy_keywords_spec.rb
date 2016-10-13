@@ -40,12 +40,6 @@ describe Puppet::Type.type(:entropy_keywords) do
   end
 
   describe "when validating required properties" do
-    it "should raise an error when no required attributes are passed" do
-      expect {
-        described_class.new(:name => "test")
-      }.to raise_error(Puppet::Error, /At least one of (.*) is required/)
-    end
-
     it "should raise an error when a version is passed with no package" do
       expect {
         described_class.new(:name => "test", :repo => "test", :version => "1.2.3")
