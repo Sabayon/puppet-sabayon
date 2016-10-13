@@ -243,6 +243,19 @@ For more info on package keywords, see https://wiki.gentoo.org/wiki/KEYWORDS
 * `entropy_splitdebug` Manages entropy package debug information
 * `entropy_splitdebug_mask` Manages entropy package debug information masks
 
+### Facts
+
+#### `locale`
+
+Identifies the system-wide default locale, as set by `eselect`.
+
+This is used internally by the entropy package provider to run `equo` commands
+using the correct locale.
+
+#### `operatingsystem`
+
+Overrides the detection of the operating system on Sabayon systems to `Sabayon`.
+
 ## Limitations
 
 This module is actively used by the developer against current Sabayon versions.
