@@ -1,4 +1,4 @@
-## 2016-10-13 Release 0.1.1
+## 2016-10-13 Release 0.1.2
 
 - Improved package regexes for valdiation and parsing
   (now following the Gentoo EAPI6 PMS document to ensure correctness)
