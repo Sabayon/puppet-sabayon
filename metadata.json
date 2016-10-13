@@ -1,6 +1,6 @@
 {
   "name": "optiz0r-sabayon",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "Ben Roberts",
   "license": "MIT",
   "summary": "Extends Puppet with support for the Sabayon Linux distribution",
