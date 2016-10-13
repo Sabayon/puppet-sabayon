@@ -1,20 +1,27 @@
 {
   "name": "optiz0r-sabayon",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "author": "Ben Roberts",
   "license": "MIT",
   "summary": "Extends Puppet with support for the Sabayon Linux distribution",
   "source": "https://github.com/Sabayon/puppet-sabayon.git",
   "project_page": "https://github.com/Sabayon/puppet-sabayon",
   "issues_url": "https://github.com/Sabayon/puppet-sabayon/issues",
-  "tags": ["sabayon", "entropy"],
+  "tags": [
+    "sabayon",
+    "entropy"
+  ],
   "operatingsystem_support": [
     {
-    "operatingsystem":"Sabayon",
-    "operatingsystemrelease":[ "16.07", "16.11" ]
+      "operatingsystem": "Sabayon",
+      "operatingsystemrelease": [
+        "16.07",
+        "16.11"
+      ]
     }
-   ],
+  ],
   "dependencies": [
+
   ],
   "data_provider": "hiera"
 }
