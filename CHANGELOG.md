@@ -1,3 +1,7 @@
+## UNRELEASED
+
+- Add `entropy_repo` type to enable/disable repositories
+
 ## 2016-10-13 Release 0.2.0
 
 - Add `locale` fact

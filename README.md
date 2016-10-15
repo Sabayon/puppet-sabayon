@@ -18,7 +18,9 @@ This module extends puppet with support for the Sabayon Linux distribution.
 It adds support for:
 * The Entropy package manager
 * Managing `Sabayon Community Repository (SCR)` definitions using `enman`
+* Enabling and disabling entropy repositories
 * Entropy package masks and unmasks
+* Splitdebug installs for packages
 * Using systemd as the default service provider
 
 ## Setup
@@ -78,11 +80,38 @@ not install 'mysql' since there's no way to disambiguate between
 
 ### Managing enman repositories
 
+Install an available SCR repository using enman. The title is taken to be the
+repository name by default, and must be available via enman. Use an `ensure`
+value of `present` to install the repo, and `absent` to remove it.
+
 ```puppet
 enman_repo { 'community':
   ensure => present,
 }
 ```
+
+### Enabling and disabling entropy repositories
+
+Installed repositories (whether system or SCR repositories) can be enabled and
+disabled using the `entropy_repo` type. 
+
+To enable a repository, use:
+```puppet
+entropy_repo { 'sabayon-limbo':
+  enabled => 'true',
+}
+```
+
+To disable a repository, use:
+```puppet
+entropy_repo { 'sabayon-limbo':
+  enabled => 'false',
+}
+```
+
+This type cannot currently install or remove repositories, only control the
+enabled state of existing repositories. The repository being managed must
+already exist on the system.
 
 ### Masking packages
 
@@ -238,6 +267,7 @@ For more info on package keywords, see https://wiki.gentoo.org/wiki/KEYWORDS
 ### Types
 
 * `enman_repo`: Manages SCR repositories using enman
+* `entropy_repo`: Enables/Disables repositories
 * `entropy_mask`: Manages entropy package masks
 * `entropy_unmask`: Manages entropy package unmasks
 * `entropy_splitdebug` Manages entropy package debug information
