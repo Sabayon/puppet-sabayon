@@ -17,7 +17,7 @@ Puppet::Type.type(:entropy_repo).provide(:file) do
     enabled_filename = "/etc/entropy/repositories.conf.d/entropy_#{type_prefix}#{@property_hash[:name]}"
     disabled_filename = "/etc/entropy/repositories.conf.d/_entropy_#{type_prefix}#{@property_hash[:name]}"
 
-    if value == 'true'
+    if value == 'true' || value == :true
       if File.exists?(disabled_filename)
         File.rename(disabled_filename, enabled_filename)
       end
