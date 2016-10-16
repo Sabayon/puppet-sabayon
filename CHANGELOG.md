@@ -1,6 +1,7 @@
 ## UNRELEASED
 
 - Add `entropy_repo` type to enable/disable repositories
+- Add `entropy_repos` fact
 
 ## 2016-10-13 Release 0.2.0
 

@@ -102,10 +102,12 @@ entropy_repo { 'sabayon-limbo':
 }
 ```
 
-To disable a repository, use:
+To disable a repository (only if present), use:
 ```puppet
-entropy_repo { 'sabayon-limbo':
-  enabled => 'false',
+if 'sabayon-limbo' in $facts['entropy_repos'] {
+  entropy_repo { 'sabayon-limbo':
+    enabled => 'false',
+  }
 }
 ```
 
@@ -274,6 +276,26 @@ For more info on package keywords, see https://wiki.gentoo.org/wiki/KEYWORDS
 * `entropy_splitdebug_mask` Manages entropy package debug information masks
 
 ### Facts
+
+#### `entropy_repos`
+
+Provides a structured fact identifying the entropy repos present on the system
+including their enabled/disabled state, and whether they are enman or entropy
+repositories.
+
+Example (in yaml format for readability):
+```yaml
+---
+sabayonlinux.org:
+  repo_type: "entropy"
+  enabled: "true"
+sabayon-limbo:
+  repo_type: "entropy"
+  enabled: "false"
+community:
+  repo_type: "enman"
+  enabled: "true"
+```
 
 #### `locale`
 
