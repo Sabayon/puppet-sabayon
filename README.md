@@ -37,6 +37,10 @@ It adds support for:
    This module overrides the default provider for `package` resources to
    force use of `entropy`
 
+### Prerequisites
+
+* `sys-apps/lsb-release` is required for the operatingsystem fact to work
+
 ### Beginning with sabayon
 
 The types and providers within this module can be used without any special
