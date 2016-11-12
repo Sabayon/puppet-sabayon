@@ -1,5 +1,7 @@
 # Sabayon
 
+[![CircleCI](https://circleci.com/gh/Sabayon/puppet-sabayon.svg?style=shield)](https://circleci.com/gh/Sabayon/puppet-sabayon)
+
 #### Table of Contents
 
 1. [Description](#description)
