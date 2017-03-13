@@ -325,3 +325,7 @@ best-efforts basis.
 
 Pull requests welcome!
 
+## Contributors
+
+* [https://github.com/ace13](ace13)
+

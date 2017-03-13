@@ -1,3 +1,8 @@
+## 2017-03-13 Release 0.4.0
+
+- Replace operatingsystem.rb native fact with executable fact to workaround
+  [https://tickets.puppetlabs.com/browse/FACT-1528](FACT-1528) (ace13)
+
 ## 2016-10-16 Release 0.3.0
 
 - Add `entropy_repo` type to enable/disable repositories
