@@ -25,7 +25,7 @@ Puppet::Type.type(:package).provide(:entropy, :parent => Puppet::Provider::Packa
   defaultfor :operatingsystem => :Sabayon
 
   def self.instances
-    result_format = /^(\S+)\/(\S+)-([\.\d]+(?:_?(?:a(?:lpha)?|b(?:eta)?|pre|rc|p)\d*)?(?:-r\d+)?)(?:#(\S+))?$/
+    result_format = /^(\S+)\/(\S+)-([\.\d]+(?:_?(?:a(?:lpha)?|b(?:eta)?|pre|pre_pre|rc|p)\d*)?(?:-r\d+)?)(?:#(\S+))?$/
     result_fields = [:category, :name, :ensure]
 
     begin
@@ -88,7 +88,7 @@ Puppet::Type.type(:package).provide(:entropy, :parent => Puppet::Provider::Packa
   end
 
   def query
-    result_format = /^(\S+)\/(\S+)-([\.\d]+(?:_(?:alpha|beta|pre|rc|p)\d+)?(?:-r\d+)?)(?::[^#]+)?(?:#(\S+))?$/
+    result_format = /^(\S+)\/(\S+)-([\.\d]+(?:_(?:alpha|beta|pre_pre|pre|rc|p)\d+)?(?:-r\d+)?)(?::[^#]+)?(?:#(\S+))?$/
     result_fields = [:category, :name, :version_available]
 
     begin
