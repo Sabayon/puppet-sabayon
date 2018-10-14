@@ -48,7 +48,7 @@ Puppet::Type.type(:package).provide(:entropy, :parent => Puppet::Provider::Packa
 
       return packages
     rescue Puppet::ExecutionFailure => detail
-      raise Puppet::Error.new(detail)
+      raise Puppet::Error.new(detail.message)
     end
   end
 
@@ -59,7 +59,10 @@ Puppet::Type.type(:package).provide(:entropy, :parent => Puppet::Provider::Packa
       # We must install a specific version
       name = "=#{name}-#{should}"
     end
-    equo "install", name
+    begin
+      equo "install", name
+    rescue Puppet::ExecutionFailure => detail
+      raise Puppet::Error.new(detail.message)
   end
 
   # The common package name format.
@@ -72,7 +75,10 @@ Puppet::Type.type(:package).provide(:entropy, :parent => Puppet::Provider::Packa
   end
 
   def uninstall
-    equo "remove", package_name
+    begin
+      equo "remove", package_name
+    rescue Puppet::ExecutionFailure => detail
+      raise Puppet::Error.new(detail.message)
   end
 
   def update
@@ -141,7 +147,7 @@ Puppet::Type.type(:package).provide(:entropy, :parent => Puppet::Provider::Packa
         raise Puppet::Error.new("No package found with the specified name [#{package_name}]")
       end
     rescue Puppet::ExecutionFailure => detail
-      raise Puppet::Error.new(detail)
+      raise Puppet::Error.new(detail.message)
     end
   end
 
