@@ -1,3 +1,10 @@
+## 2018-10-14 Release 0.5.0
+
+- Update package install error handling for compatbility with
+  puppet 6
+- Add support for `pre_pre` package versions
+- Update build-time gems
+
 ## 2017-03-13 Release 0.4.0
 
 - Replace operatingsystem.rb native fact with executable fact to workaround
