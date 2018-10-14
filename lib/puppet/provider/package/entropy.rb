@@ -63,6 +63,7 @@ Puppet::Type.type(:package).provide(:entropy, :parent => Puppet::Provider::Packa
       equo "install", name
     rescue Puppet::ExecutionFailure => detail
       raise Puppet::Error.new(detail.message)
+    end
   end
 
   # The common package name format.
@@ -79,6 +80,7 @@ Puppet::Type.type(:package).provide(:entropy, :parent => Puppet::Provider::Packa
       equo "remove", package_name
     rescue Puppet::ExecutionFailure => detail
       raise Puppet::Error.new(detail.message)
+    end
   end
 
   def update
