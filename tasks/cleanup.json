@@ -1,0 +1,7 @@
+{
+  "puppet_task_version": 1,
+  "supports_noop": false,
+  "description": "Run `equo cleanup` on target nodes to free up disk space used by downloaded packages",
+  "parameters": {
+  }
+}

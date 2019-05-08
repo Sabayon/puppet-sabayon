@@ -314,6 +314,16 @@ using the correct locale.
 
 Overrides the detection of the operating system on Sabayon systems to `Sabayon`.
 
+### Tasks
+
+This module includes tasks for ad-hoc use with Puppet Bolt or Choria.
+
+### `cleanup`
+
+This task executes `equo cleanup` command on the target nodes, which frees up
+disk space used by cached package downloads. It does not accept any parameters,
+and does not support running noop mode.
+
 ## Limitations
 
 This module is actively used by the developer against current Sabayon versions.

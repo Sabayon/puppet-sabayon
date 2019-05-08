@@ -1,3 +1,8 @@
+## TBC - Next
+
+- Adds `cleanup` task
+
+
 ## 2018-10-14 Release 0.5.0
 
 - Update package install error handling for compatbility with
