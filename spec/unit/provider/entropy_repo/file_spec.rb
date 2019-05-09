@@ -43,7 +43,7 @@ describe Puppet::Type.type(:entropy_repo).provider(:file) do
 
   describe 'when enabling a repository' do
     it 'enables a disabled repository' do
-      File.stubs(:exists?).with('/etc/entropy/repositories.conf.d/entropy_sabayonlinux.org').returns(true).once
+      File.stubs(:exist?).with('/etc/entropy/repositories.conf.d/entropy_sabayonlinux.org').returns(true).once
       File.stubs(:rename).with('/etc/entropy/repositories.conf.d/entropy_sabayonlinux.org', '/etc/entropy/repositories.conf.d/_entropy_sabayonlinux.org').once
       instance = described_class.new(name: 'sabayonlinux.org', enabled: 'true', type: 'entropy')
       instance.enabled = 'false'
@@ -52,7 +52,7 @@ describe Puppet::Type.type(:entropy_repo).provider(:file) do
 
   describe 'when disabling a repository' do
     it 'disables an enabled repository' do
-      File.stubs(:exists?).with('/etc/entropy/repositories.conf.d/_entropy_sabayon-limbo').returns(true).once
+      File.stubs(:exist?).with('/etc/entropy/repositories.conf.d/_entropy_sabayon-limbo').returns(true).once
       File.stubs(:rename).with('/etc/entropy/repositories.conf.d/_entropy_sabayon-limbo', '/etc/entropy/repositories.conf.d/entropy_sabayon-limbo').once
       instance = described_class.new(name: 'sabayon-limbo', enabled: 'false', type: 'entropy')
       instance.enabled = 'true'
