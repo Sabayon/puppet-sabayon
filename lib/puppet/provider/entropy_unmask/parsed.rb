@@ -1,43 +1,40 @@
 require 'puppet/provider/parsedfile'
-unmasks = "/etc/entropy/packages/package.unmask"
+unmasks = '/etc/entropy/packages/package.unmask'
 
 Puppet::Type.type(:entropy_unmask).provide(:parsed,
-  :parent => Puppet::Provider::ParsedFile,
-  :default_target => unmasks,
-  :filetype => :flat
-) do
+                                           parent: Puppet::Provider::ParsedFile,
+                                           default_target: unmasks,
+                                           filetype: :flat) do
 
-  desc "File unmask provider for entropy packages"
+  desc 'File unmask provider for entropy packages'
 
-  defaultfor :operatingsystem => :sabayon
+  defaultfor operatingsystem: :sabayon
 
   text_line :blank,
-    :match => /^\s*$/
+            match: %r{^\s*$}
 
   text_line :comment,
-    :match      => /^\s*#/
+            match: %r{^\s*#}
 
   text_line :unmanaged,
-    :match   => %r{^([<>]?=)?((?:[A-Za-z0-9+_.-]+/)?[a-zA-Z0-9+_-]+)?(?:-(\d+(?:\.\d+)*[a-z]*(?:_(?:alpha|beta|pre|p|rc)\d*)?(?:-r\d+)?))?(?::([a-zA-Z0-9._-]+))?(?:\[([^\]]*)\])?(?:#([a-zA-Z0-9._-]+))?(?:::([a-zA-Z0-9._-]+))?\s*$}
+            match: %r{^([<>]?=)?((?:[A-Za-z0-9+_.-]+/)?[a-zA-Z0-9+_-]+)?(?:-(\d+(?:\.\d+)*[a-z]*(?:_(?:alpha|beta|pre|p|rc)\d*)?(?:-r\d+)?))?(?::([a-zA-Z0-9._-]+))?(?:\[([^\]]*)\])?(?:#([a-zA-Z0-9._-]+))?(?:::([a-zA-Z0-9._-]+))?\s*$}
 
   record_line :parsed,
-    :fields => %w{operator package version slot use tag repo name},
-    :match   => %r{^([<>]?=)?((?:[A-Za-z0-9+_.-]+/)?[a-zA-Z0-9+_-]+)?(?:-(\d+(?:\.\d+)*[a-z]*(?:_(?:alpha|beta|pre|p|rc)\d*)?(?:-r\d+)?))?(?::([a-zA-Z0-9._-]+))?(?:\[([^\]]*)\])?(?:#([a-zA-Z0-9._-]+))?(?:::([a-zA-Z0-9._-]+))?\s+#+ Puppet Name: (.*)\s*$},
-    :to_line => proc { |record|
-      line = ""
-      line += record[:operator]        if record[:operator]
-      line += record[:package]         if record[:package]
-      line += "-" + record[:version]   if record[:version]
-      line += ":" + record[:slot]      if record[:slot]
-      line += "[" + record[:use] + "]" if record[:use]
-      line += "#" + record[:tag]       if record[:tag]
-      line += "::" + record[:repo]     if record[:repo]
-      line += " ## Puppet Name: " + record[:name]
+              fields: ['operator', 'package', 'version', 'slot', 'use', 'tag', 'repo', 'name'],
+              match: %r{^([<>]?=)?((?:[A-Za-z0-9+_.-]+/)?[a-zA-Z0-9+_-]+)?(?:-(\d+(?:\.\d+)*[a-z]*(?:_(?:alpha|beta|pre|p|rc)\d*)?(?:-r\d+)?))?(?::([a-zA-Z0-9._-]+))?(?:\[([^\]]*)\])?(?:#([a-zA-Z0-9._-]+))?(?:::([a-zA-Z0-9._-]+))?\s+#+ Puppet Name: (.*)\s*$},
+              to_line: proc { |record|
+                line = ''
+                line += record[:operator]        if record[:operator]
+                line += record[:package]         if record[:package]
+                line += '-' + record[:version]   if record[:version]
+                line += ':' + record[:slot]      if record[:slot]
+                line += '[' + record[:use] + ']' if record[:use]
+                line += '#' + record[:tag]       if record[:tag]
+                line += '::' + record[:repo]     if record[:repo]
+                line += ' ## Puppet Name: ' + record[:name]
 
-      line
-    }
-   
+                line
+              }
 end
 
 # vim: set ts=2 shiftwidth=2 expandtab :
-

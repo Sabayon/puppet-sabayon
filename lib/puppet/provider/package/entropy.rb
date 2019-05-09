@@ -1,7 +1,7 @@
 require 'puppet/provider/package'
 require 'fileutils'
 
-Puppet::Type.type(:package).provide(:entropy, :parent => Puppet::Provider::Package) do
+Puppet::Type.type(:package).provide(:entropy, parent: Puppet::Provider::Package) do
   desc "Provides packaging support for Sabayon's entropy system."
 
   has_feature :versionable
@@ -9,60 +9,57 @@ Puppet::Type.type(:package).provide(:entropy, :parent => Puppet::Provider::Packa
   has_feature :uninstallable
   has_feature :upgradeable
 
-  has_command(:equo, "equo") do
+  has_command(:equo, 'equo') do
     locale = Facter.value(:locale)
-    environment({
-      :LANG => locale,
-      :LC_ALL => locale,
-      :LANGUAHE => locale,
-    })
+    environment(LANG: locale,
+                LC_ALL: locale,
+                LANGUAHE: locale)
   end
 
   # Require the locale fact exist
-  confine :false => Facter.value(:locale).nil?
-  confine :osfamily => :Gentoo
-  
-  defaultfor :operatingsystem => :Sabayon
+  confine false: Facter.value(:locale).nil?
+  confine osfamily: :Gentoo
+
+  defaultfor operatingsystem: :Sabayon
 
   def self.instances
     result_format = /^(\S+)\/(\S+)-([\.\d]+(?:_?(?:a(?:lpha)?|b(?:eta)?|pre|pre_pre|rc|p)\d*)?(?:-r\d+)?)(?:#(\S+))?$/
     result_fields = [:category, :name, :ensure]
 
     begin
-      search_output = equo("query", "list", "installed", "--quiet", "--verbose").chomp
+      search_output = equo('query', 'list', 'installed', '--quiet', '--verbose').chomp
 
       packages = []
       search_output.each_line do |search_result|
         match = result_format.match(search_result)
 
-        if match
-          package = {}
-          result_fields.zip(match.captures) do |field, value|
-            package[field] = value unless !value or value.empty?
-          end
-          package[:provider] = :entropy
-
-          packages << new(package)
+        next unless match
+        package = {}
+        result_fields.zip(match.captures) do |field, value|
+          package[field] = value unless !value || value.empty?
         end
+        package[:provider] = :entropy
+
+        packages << new(package)
       end
 
       return packages
     rescue Puppet::ExecutionFailure => detail
-      raise Puppet::Error.new(detail.message)
+      raise Puppet::Error, detail.message
     end
   end
 
   def install
     should = @resource.should(:ensure)
     name = package_name
-    unless should == :present or should == :latest
+    unless should == :present || should == :latest
       # We must install a specific version
       name = "=#{name}-#{should}"
     end
     begin
-      equo "install", name
+      equo 'install', name
     rescue Puppet::ExecutionFailure => detail
-      raise Puppet::Error.new(detail.message)
+      raise Puppet::Error, detail.message
     end
   end
 
@@ -76,15 +73,13 @@ Puppet::Type.type(:package).provide(:entropy, :parent => Puppet::Provider::Packa
   end
 
   def uninstall
-    begin
-      equo "remove", package_name
-    rescue Puppet::ExecutionFailure => detail
-      raise Puppet::Error.new(detail.message)
-    end
+    equo 'remove', package_name
+  rescue Puppet::ExecutionFailure => detail
+    raise Puppet::Error, detail.message
   end
 
   def update
-    self.install
+    install
   end
 
   def query
@@ -93,15 +88,14 @@ Puppet::Type.type(:package).provide(:entropy, :parent => Puppet::Provider::Packa
 
     begin
       # Look for an installed package from a known repository
-      search_output = equo("match", "--quiet", "--verbose", package_name).chomp
+      search_output = equo('match', '--quiet', '--verbose', package_name).chomp
 
       search_match = search_output.match(result_format)
       if search_match
         package = {}
         result_fields.zip(search_match.captures).each do |field, value|
-          package[field] = value unless !value or value.empty?
+          package[field] = value unless !value || value.empty?
         end
-
 
         begin
           installed_output = equo('match', '--quiet', '--verbose', '--installed', package_name).chomp
@@ -122,38 +116,34 @@ Puppet::Type.type(:package).provide(:entropy, :parent => Puppet::Provider::Packa
       else
         # List all installed packages and try and find if it's installed from outside a repository
         # If so, assume the installed version is the latest available
-        all_installed = equo("query", "list", "installed", "--quiet", "--verbose").chomp
+        all_installed = equo('query', 'list', 'installed', '--quiet', '--verbose').chomp
 
         all_installed.split("\n").each do |installed_package|
-        
           search_match = installed_package.match(result_format)
-          if search_match
-            search_captures = search_match.captures
-          
-            if (search_captures[0] == @resource[:category] and search_captures[1] == @resource[:name]) or "#{search_captures[0]}/#{search_captures[1]}" == package_name
+          next unless search_match
+          search_captures = search_match.captures
 
-              package = {
-                :ensure => search_captures[2]
-              }
+          next unless (search_captures[0] == (@resource[:category]) && search_captures[1] == (@resource[:name])) || package_name == "#{search_captures[0]}/#{search_captures[1]}"
 
-              result_fields.zip(search_captures).each do |field, value|
-                package[field] = value unless !value or value.empty?
-              end
+          package = {
+            ensure: search_captures[2],
+          }
 
-              return package
-            
-            end
+          result_fields.zip(search_captures).each do |field, value|
+            package[field] = value unless !value || value.empty?
           end
+
+          return package
         end
 
-        raise Puppet::Error.new("No package found with the specified name [#{package_name}]")
+        raise Puppet::Error, "No package found with the specified name [#{package_name}]"
       end
     rescue Puppet::ExecutionFailure => detail
-      raise Puppet::Error.new(detail.message)
+      raise Puppet::Error, detail.message
     end
   end
 
   def latest
-    self.query[:version_available]
+    query[:version_available]
   end
 end
