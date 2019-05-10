@@ -1,6 +1,7 @@
 ## TBC - Next
 
 - Adds `cleanup` task
+- Convert module to using PDK
 
 
 ## 2018-10-14 Release 0.5.0
