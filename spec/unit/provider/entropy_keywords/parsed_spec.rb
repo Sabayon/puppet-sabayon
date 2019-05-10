@@ -1,10 +1,11 @@
 require 'spec_helper'
 
 describe Puppet::Type.type(:entropy_keywords).provider(:parsed) do
+  let(:default_target) { described_class.default_target }
+
   before(:each) do
     described_class.stubs(:filetype).returns(Puppet::Util::FileType::FileTypeRam)
     described_class.stubs(:filetype=)
-    @default_target = described_class.default_target
   end
 
   describe 'should have a default target of /etc/entropy/packages/package.keywords' do
@@ -152,10 +153,11 @@ describe Puppet::Type.type(:entropy_keywords).provider(:parsed) do
   end
 
   describe 'when flushing' do
+    let(:ramfile) { Puppet::Util::FileType::FileTypeRam.new(:default_target) }
+
     before :each do
-      @ramfile = Puppet::Util::FileType::FileTypeRam.new(@default_target)
-      File.stubs(:exist?).with(@default_target).returns(true)
-      described_class.any_instance.stubs(:target_object).returns(@ramfile)
+      File.stubs(:exist?).with(:default_target).returns(true)
+      described_class.stubs(:target_object).returns(:ramfile)
     end
 
     after :each do

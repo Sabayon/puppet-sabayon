@@ -1,8 +1,8 @@
 describe Puppet::Type.type(:entropy_repo) do
   before(:each) do
-    @provider = stub 'provider'
-    @provider.stubs(:name).returns(:file)
-    described_class.stubs(:defaultprovider).returns(@provider)
+    provider = stub 'provider'
+    provider.stubs(:name).returns(:file)
+    described_class.stubs(:defaultprovider).returns(provider)
   end
 
   it 'is an instance of Puppet::Type::Entropy_repo' do

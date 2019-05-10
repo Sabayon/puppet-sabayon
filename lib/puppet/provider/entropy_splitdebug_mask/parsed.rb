@@ -17,11 +17,29 @@ Puppet::Type.type(:entropy_splitdebug_mask).provide(:parsed,
             match: %r{^\s*#}
 
   text_line :unmanaged,
-            match: %r{^([<>]?=)?((?:[A-Za-z0-9+_.-]+/)?[a-zA-Z0-9+_-]+)?(?:-(\d+(?:\.\d+)*[a-z]*(?:_(?:alpha|beta|pre|p|rc)\d*)?(?:-r\d+)?))?(?::([a-zA-Z0-9\._-]+))?(?:\[([^\]]*)\])?(?:#([a-zA-Z0-9._-]+))?(?:::([a-zA-Z0-9._-]+))?\s*$}
+            match: %r{
+              ^([<>]?=)?
+              ((?:[A-Za-z0-9+_.-]+/)?[a-zA-Z0-9+_-]+)?
+              (?:-(\d+(?:\.\d+)*[a-z]*(?:_(?:alpha|beta|pre|p|rc)\d*)?(?:-r\d+)?))?
+              (?::([a-zA-Z0-9\._-]+))?
+              (?:\[([^\]]*)\])?
+              (?:\#([a-zA-Z0-9._-]+))?
+              (?:::([a-zA-Z0-9._-]+))?
+              \s*$
+            }x
 
   record_line :parsed,
               fields: ['operator', 'package', 'version', 'slot', 'use', 'tag', 'repo', 'name'],
-              match: %r{^([<>]?=)?((?:[A-Za-z0-9+_.-]+/)?[a-zA-Z0-9+_-]+)?(?:-(\d+(?:\.\d+)*[a-z]*(?:_(?:alpha|beta|pre|p|rc)\d*)?(?:-r\d+)?))?(?::([a-zA-Z0-9._-]+))?(?:\[([^\]]*)\])?(?:#([a-zA-Z0-9._-]+))?(?:::([a-zA-Z0-9._-]+))?\s+#+ Puppet Name: (.*)\s*$},
+              match: %r{
+                ^([<>]?=)?
+                ((?:[A-Za-z0-9+_.-]+/)?[a-zA-Z0-9+_-]+)?
+                (?:-(\d+(?:\.\d+)*[a-z]*(?:_(?:alpha|beta|pre|p|rc)\d*)?(?:-r\d+)?))?
+                (?::([a-zA-Z0-9._-]+))?(?:\[([^\]]*)\])?
+                (?:\#([a-zA-Z0-9._-]+))?
+                (?:::([a-zA-Z0-9._-]+))?
+                \s+\#+\s+Puppet\s+Name:\s+(.*)
+                \s*$
+              }x,
               to_line: proc { |record|
                 line = ''
                 line += record[:operator]        if record[:operator]

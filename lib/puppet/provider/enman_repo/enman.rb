@@ -41,7 +41,8 @@ Puppet::Type.type(:enman_repo).provide(:enman) do
     available_repos = instances
 
     resources.each do |name, _resource|
-      if provider = available_repos.find { |r| r.name == name }
+      provider = available_repos.find { |r| r.name == name }
+      if provider
         resources[name].provider = provider
       end
     end

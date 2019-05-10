@@ -17,11 +17,28 @@ Puppet::Type.type(:entropy_keywords).provide(:parsed,
             match: %r{^\s*#}
 
   text_line :unmanaged,
-            match: %r{^(\S+)\s+([<>]?=)?(?:((?:[A-Za-z0-9+_.-]+/)?[a-zA-Z0-9+_-]+)?(?:-(\d+(?:\.\d+)*[a-z]*(?:_(?:alpha|beta|pre|p|rc)\d*)?(?:-r\d+)?))?)?(?:\s*repo=([a-zA-Z0-9\._-]+))?\s*$}
+            match: %r{
+              ^(\S+)\s+([<>]?=)?
+              (?:
+                ((?:[A-Za-z0-9+_.-]+/)?[a-zA-Z0-9+_-]+)?
+                (?:-(\d+(?:\.\d+)*[a-z]*(?:_(?:alpha|beta|pre|p|rc)\d*)?(?:-r\d+)?))?
+              )?
+              (?:\s*repo=([a-zA-Z0-9\._-]+))?
+              \s*$
+            }x
 
   record_line :parsed,
               fields: ['keyword', 'operator', 'package', 'version', 'repo', 'name'],
-              match: %r{^(\S+)\s+([<>]?=)?(?:((?:[A-Za-z0-9+_.-]+/)?[a-zA-Z0-9+_-]+)?(?:-(\d+(?:\.\d+)*[a-z]*(?:_(?:alpha|beta|pre|p|rc)\d*)?(?:-r\d+)?))?)?(?:\s*repo=([a-zA-Z0-9\._-]+))?\s+## Puppet Name: (.*)\s*$},
+              match: %r{
+                ^(\S+)\s+([<>]?=)?
+                (?:
+                  ((?:[A-Za-z0-9+_.-]+/)?[a-zA-Z0-9+_-]+)?
+                  (?:-(\d+(?:\.\d+)*[a-z]*(?:_(?:alpha|beta|pre|p|rc)\d*)?(?:-r\d+)?))?
+                )?
+                (?:\s*repo=([a-zA-Z0-9\._-]+))?
+                \s+\#+\s+Puppet\s+Name:\s+(.*)
+                \s*$
+              }x,
               to_line: proc { |record|
                 line = record[:keyword] + ' '
                 line += record[:operator]        if record[:operator]

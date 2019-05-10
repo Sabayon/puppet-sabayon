@@ -1,8 +1,8 @@
 describe Puppet::Type.type(:enman_repo) do
   before(:each) do
-    @provider = stub 'provider'
-    @provider.stubs(:name).returns(:enman)
-    described_class.stubs(:defaultprovider).returns(@provider)
+    provider = stub 'provider'
+    provider.stubs(:name).returns(:enman)
+    described_class.stubs(:defaultprovider).returns(provider)
   end
 
   it 'is an instance of Puppet::Type::Enman_repo' do

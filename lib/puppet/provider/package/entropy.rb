@@ -23,7 +23,10 @@ Puppet::Type.type(:package).provide(:entropy, parent: Puppet::Provider::Package)
   defaultfor operatingsystem: :Sabayon
 
   def self.instances
-    result_format = /^(\S+)\/(\S+)-([\.\d]+(?:_?(?:a(?:lpha)?|b(?:eta)?|pre|pre_pre|rc|p)\d*)?(?:-r\d+)?)(?:#(\S+))?$/
+    result_format = %r{
+      ^(\S+)\/(\S+)-([\.\d]+(?:_?(?:a(?:lpha)?|b(?:eta)?|pre|pre_pre|rc|p)\d*)?
+      (?:-r\d+)?)(?:\#(\S+))?$
+    }x
     result_fields = [:category, :name, :ensure]
 
     begin
@@ -52,7 +55,7 @@ Puppet::Type.type(:package).provide(:entropy, parent: Puppet::Provider::Package)
   def install
     should = @resource.should(:ensure)
     name = package_name
-    unless should == :present || should == :latest
+    unless [:present, :latest].include?(should)
       # We must install a specific version
       name = "=#{name}-#{should}"
     end
@@ -83,7 +86,10 @@ Puppet::Type.type(:package).provide(:entropy, parent: Puppet::Provider::Package)
   end
 
   def query
-    result_format = /^(\S+)\/(\S+)-([\.\d]+(?:_(?:alpha|beta|pre_pre|pre|rc|p)\d+)?(?:-r\d+)?)(?::[^#]+)?(?:#(\S+))?$/
+    result_format = %r{
+      ^(\S+)\/(\S+)-([\.\d]+(?:_(?:alpha|beta|pre_pre|pre|rc|p)\d+)?(?:-r\d+)?)
+      (?::[^\#]+)?(?:\#(\S+))?$
+    }x
     result_fields = [:category, :name, :version_available]
 
     begin

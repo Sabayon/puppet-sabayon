@@ -1,10 +1,10 @@
 describe Puppet::Type.type(:entropy_keywords) do
   before(:each) do
-    @provider = stub 'provider'
-    @provider.stubs(:name).returns(:parsed)
-    @provider.stubs(:ancestors).returns([Puppet::Provider::ParsedFile])
-    @provider.stubs(:default_target).returns('defaulttarget')
-    described_class.stubs(:defaultprovider).returns(@provider)
+    provider = stub 'provider'
+    provider.stubs(:name).returns(:parsed)
+    provider.stubs(:ancestors).returns([Puppet::Provider::ParsedFile])
+    provider.stubs(:default_target).returns('defaulttarget')
+    described_class.stubs(:defaultprovider).returns(provider)
   end
 
   it 'is an instance of Puppet::Type::Entropy_keywords' do

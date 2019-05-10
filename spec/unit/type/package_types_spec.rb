@@ -14,11 +14,11 @@ types = {
 types.each do |type_name, type|
   describe Puppet::Type.type(type_name) do
     before(:each) do
-      @provider = stub 'provider'
-      @provider.stubs(:name).returns(:parsed)
-      @provider.stubs(:ancestors).returns([Puppet::Provider::ParsedFile])
-      @provider.stubs(:default_target).returns('defaulttarget')
-      described_class.stubs(:defaultprovider).returns(@provider)
+      provider = stub 'provider'
+      provider.stubs(:name).returns(:parsed)
+      provider.stubs(:ancestors).returns([Puppet::Provider::ParsedFile])
+      provider.stubs(:default_target).returns('defaulttarget')
+      described_class.stubs(:defaultprovider).returns(provider)
     end
 
     it "should be an instance of #{type.class.name}" do

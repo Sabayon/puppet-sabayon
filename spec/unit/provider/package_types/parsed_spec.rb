@@ -20,10 +20,11 @@ default_targets = {
 
 types.each do |type_name, _type|
   describe Puppet::Type.type(type_name).provider(:parsed) do
+    let(:default_target) { described_class.default_target }
+
     before(:each) do
       described_class.stubs(:filetype).returns(Puppet::Util::FileType::FileTypeRam)
       described_class.stubs(:filetype=)
-      @default_target = described_class.default_target
     end
 
     describe "should have a default target of #{default_targets[type_name]}" do
@@ -195,10 +196,13 @@ types.each do |type_name, _type|
     end
 
     describe 'when flushing' do
+      let(:ramfile) do
+        Puppet::Util::FileType::FileTypeRam.new(:default_target)
+      end
+
       before :each do
-        @ramfile = Puppet::Util::FileType::FileTypeRam.new(@default_target)
         File.stubs(:exist?).with(default_targets[type_name]).returns(true)
-        described_class.any_instance.stubs(:target_object).returns(@ramfile)
+        described_class.stubs(:target_object).returns(:ramfile)
       end
 
       after :each do

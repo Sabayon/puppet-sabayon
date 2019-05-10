@@ -17,14 +17,12 @@ Puppet::Type.type(:entropy_repo).provide(:file) do
     enabled_filename = "/etc/entropy/repositories.conf.d/entropy_#{type_prefix}#{@property_hash[:name]}"
     disabled_filename = "/etc/entropy/repositories.conf.d/_entropy_#{type_prefix}#{@property_hash[:name]}"
 
-    if value == 'true' || value == :true
+    if ['true', :true].include?(value)
       if File.exist?(disabled_filename)
         File.rename(disabled_filename, enabled_filename)
       end
-    else
-      if File.exist?(enabled_filename)
-        File.rename(enabled_filename, disabled_filename)
-      end
+    elsif File.exist?(enabled_filename)
+      File.rename(enabled_filename, disabled_filename)
     end
 
     @property_hash[:enabled] = value
@@ -34,7 +32,7 @@ Puppet::Type.type(:entropy_repo).provide(:file) do
     repos = Dir.entries('/etc/entropy/repositories.conf.d/')
 
     repos.map { |r|
-      if r == '.' || r == '..'
+      if ['.', '..'].include?(r)
         nil
       elsif r =~ %r{\.example$}
         nil
@@ -62,7 +60,8 @@ Puppet::Type.type(:entropy_repo).provide(:file) do
     repos = instances
 
     resources.each do |name, _resource|
-      if provider = repos.find { |r| r.name == name }
+      provider = repos.find { |r| r.name == name }
+      if provider
         resources[name].provider = provider
       end
     end
