@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 describe Puppet::Type.type(:entropy_repo) do
   before(:each) do
     provider = stub 'provider'
