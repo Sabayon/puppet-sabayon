@@ -1,0 +1,11 @@
+{
+  "puppet_task_version": 1,
+  "supports_noop": false,
+  "description": "Run `equo update` on target nodes to refresh repository definitions",
+  "parameters": {
+      "repo": {
+          "description": "Restrict update to only this named repository",
+          "type": "Optional[Pattern[/^[a-zA-Z0-9._-]+$/]]"
+      }
+  }
+}
