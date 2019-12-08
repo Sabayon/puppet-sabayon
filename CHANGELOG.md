@@ -1,3 +1,7 @@
+## 2-10-12-08 Release 0.6.1
+
+- Improve parsing of package versions with respect to PMS v7 spec
+
 ## 2019-05-10 Release 0.6.0
 
 - Adds `cleanup` task
