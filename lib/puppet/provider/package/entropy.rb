@@ -24,7 +24,7 @@ Puppet::Type.type(:package).provide(:entropy, parent: Puppet::Provider::Package)
 
   def self.instances
     result_format = %r{
-      ^(\S+)\/(\S+)-([\.\d]+(?:_?(?:a(?:lpha)?|b(?:eta)?|pre|pre_pre|rc|p)\d*)?
+      ^(\S+)\/(\S+)-([\.\d]+[a-z]?(?:_(?:alpha|beta|pre|pre_pre|rc|p)\d*)?
       (?:-r\d+)?)(?:\#(\S+))?$
     }x
     result_fields = [:category, :name, :ensure]
@@ -87,7 +87,7 @@ Puppet::Type.type(:package).provide(:entropy, parent: Puppet::Provider::Package)
 
   def query
     result_format = %r{
-      ^(\S+)\/(\S+)-([\.\d]+(?:_(?:alpha|beta|pre_pre|pre|rc|p)\d+)?(?:-r\d+)?)
+      ^(\S+)\/(\S+)-([\.\d]+[a-z]?(?:_(?:alpha|beta|pre_pre|pre|rc|p)\d*)?(?:-r\d+)?)
       (?::[^\#]+)?(?:\#(\S+))?$
     }x
     result_fields = [:category, :name, :version_available]
