@@ -1,6 +1,6 @@
 # Sabayon
 
-[![CircleCI](https://circleci.com/gh/Sabayon/puppet-sabayon.svg?style=shield)](https://circleci.com/gh/Sabayon/puppet-sabayon)
+[![Travis-CI](https://travis-ci.com/Sabayon/puppet-sabayon.svg?branch=master)](https://travis-ci.com/github/Sabayon/puppet-sabayon)
 
 #### Table of Contents
 
