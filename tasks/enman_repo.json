@@ -1,0 +1,19 @@
+{
+  "puppet_task_version": 1,
+  "supports_noop": false,
+  "description": "Runs enman to manage additional entropy repositories",
+  "parameters": {
+      "action": {
+          "description": "Action to take",
+          "type": "Enum['list-installed', 'list-available', 'add', 'remove']"
+      },
+      "repo": {
+          "description": "Manage this repository",
+          "type": "Optional[Pattern[/^[a-zA-Z0-9._-]+$/]]"
+      },
+      "url": {
+          "description": "URL of a custom repo to add",
+          "type": "Optional[String]"
+      }
+  }
+}

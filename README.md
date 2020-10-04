@@ -334,6 +334,11 @@ This task executes `equo cleanup` command on the target nodes, which frees up
 disk space used by cached package downloads. It does not accept any parameters,
 and does not support running noop mode.
 
+### `enman_repo`
+
+This task manages `enman_repo` resources and can list available/installed repos,
+remove installed repos, or add available repos via either name or URL.
+
 ## Limitations
 
 This module is actively used by the developer against current Sabayon versions.

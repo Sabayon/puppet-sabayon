@@ -1,6 +1,6 @@
 Puppet::Type.newtype(:enman_repo) do
   @desc = 'Manages Sabayon Community Repositories'
-  @doc = %q{Installs or removes an additional entropy package repository
+  @doc = %{Installs or removes an additional entropy package repository
     using the enman tool. Sabayon-maintained projects can be added by
     name. Third party repositories can be added by URL (in which case
     the name parameter must match the name of the repository pointed
@@ -31,7 +31,7 @@ Puppet::Type.newtype(:enman_repo) do
   newparam(:url) do
     desc 'URL of the Enman Repository'
     validate do |value|
-      unless value =~ /^https?:\/\/.*/
+      unless value =~ %r{^https?://.*}
         raise ArgumentError, '%s is not a valid repo url' % value
       end
     end
