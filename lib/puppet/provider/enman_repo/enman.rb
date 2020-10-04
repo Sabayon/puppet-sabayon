@@ -8,7 +8,11 @@ Puppet::Type.type(:enman_repo).provide(:enman) do
   mk_resource_methods
 
   def create
-    enman('add', resource[:name])
+    if resource[:url]
+      enman('add', resource[:url])
+    else
+      enman('add', resource[:name])
+    end
     @property_hash[:ensure] = :present
   end
 

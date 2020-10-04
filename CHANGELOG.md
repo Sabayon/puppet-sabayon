@@ -1,3 +1,7 @@
+## Next
+
+- Adds support for adding third party enman repo via URL
+
 ## 2-10-12-08 Release 0.6.1
 
 - Improve parsing of package versions with respect to PMS v7 spec

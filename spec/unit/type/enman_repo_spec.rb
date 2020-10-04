@@ -12,7 +12,7 @@ describe Puppet::Type.type(:enman_repo) do
   end
 
   describe 'when validating attributes' do
-    params = [:name]
+    params = [:name, :url]
 
     params.each do |param|
       it "should have the #{param} param" do

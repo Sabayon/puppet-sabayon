@@ -90,9 +90,19 @@ Install an available SCR repository using enman. The title is taken to be the
 repository name by default, and must be available via enman. Use an `ensure`
 value of `present` to install the repo, and `absent` to remove it.
 
+Repositories recorded in [enman-db](https://github.com/Sabayon/enman-db) can be
+added by name. Local repositories can be added via URL. When using an URL, the
+`name` property must match the name of the repo defined at the URL, to prevent
+puppet trying to re-add the repo on every run.
+
 ```puppet
 enman_repo { 'community':
   ensure => present,
+}
+
+enman_repo { 'myrepo':
+  ensure => present,
+  url    => 'https://example.com/myrepo',
 }
 ```
 
