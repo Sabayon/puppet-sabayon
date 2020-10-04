@@ -334,6 +334,12 @@ This task executes `equo cleanup` command on the target nodes, which frees up
 disk space used by cached package downloads. It does not accept any parameters,
 and does not support running noop mode.
 
+### `update`
+
+This task executes `equo update` command to update repository defintions on the
+target nodes. It accepts an optional `repo` paramter which limtis the updates to
+a single repo. If omitted, all repos defined on the target node are updated.
+
 ### `enman_repo`
 
 This task manages `enman_repo` resources and can list available/installed repos,

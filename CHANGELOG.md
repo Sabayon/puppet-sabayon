@@ -2,6 +2,7 @@
 
 - Adds support for adding third party enman repo via URL
 - Adds `sabayon::enman_repo` task for managing enman repositories via Bolt/Choria
+- Add documentation for `sabayon::update` task
 
 ## 2-10-12-08 Release 0.6.1
 
