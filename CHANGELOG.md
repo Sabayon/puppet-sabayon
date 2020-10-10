@@ -1,3 +1,7 @@
+## 2020-10-03 Release 0.7.1
+
+- Fixes automatic deployment to forge
+
 ## 2020-10-03 Release 0.7.0
 
 - Adds support for adding third party enman repo via URL
